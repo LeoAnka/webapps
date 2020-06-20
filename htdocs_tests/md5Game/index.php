@@ -8,10 +8,7 @@
 <body>
 
 
-<p>This application takes an MD5 hash
-of a two-character lower case string and
-attempts to hash all two-character combinations
-to determine the original two characters.</p>
+<p>This application reverse an MD5 hash of a four digit number</p>
 
 <pre>
 
@@ -22,6 +19,49 @@ $result = "not found";
 $check = hash("md5", "1234");
 echo $check;
 */
+//This code will be skipped if there is no Input
+
+if(isset($_GET["md5"])){
+  $cyphers = "0123456789";
+  $md5 = $_GET["md5"];
+  $trys = 10;
+  $tryPin = "";
+  $tryPinHash = "";
+  $numTrys = 0;
+  $limit = 5;
+
+  for($a = 0; $a < strlen($cyphers); $a++){
+    $cy1 = $cyphers[$a];
+    for($b = 0; $b < strlen($cyphers); $b++){
+      $cy2 = $cyphers[$b];
+      for($c = 0; $c < strlen($cyphers); $c++){
+        $cy3 = $cyphers[$c];
+        for($d = 0; $d < strlen($cyphers); $d++){
+          $cy4 = $cyphers[$d];
+          $tryPin = $cy1.$cy2.$cy3.$cy4;
+          $tryPinHash = hash("md5", $tryPin);
+          $numTrys = $numTrys + 1;
+          if ($trys > 0){
+            $trys = $trys - 1;
+            echo $tryPin, "    ", $tryPinHash, "\n";
+          }
+          //echo $numTrys, "  ", $limit, "\n";
+          /*if($numTrys > $limit){
+            echo "break";
+            break;
+          }*/
+          if($md5 == $tryPinHash){
+            $result = $tryPin;
+            break;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
 ?>
 </pre>
 
@@ -37,9 +77,11 @@ echo $check;
 
 </form>
 
-<p>Result MD5 code: <?php printf($result); ?></p>
+<p>Result original 4 digit number: <?php printf($result); ?></p>
  <!-- look in previous php blocks this variable -->
-<p>Result MD5 code: <?= htmlentities($result); ?></p>
+<!--<p>Result MD5 code: <?= htmlentities($result); ?></p>-->
+
+<!--<p><?php echo $md5 ?></p>-->
 
 </body>
 
